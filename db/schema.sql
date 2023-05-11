@@ -10,3 +10,11 @@ CREATE TABLE department{
     salary: DECIMAL NOT NULL
     department_id: INT
 };
+
+CREATE TABLE role{
+
+};
+
+CREATE TABLE employee{
+    
+}
