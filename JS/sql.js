@@ -5,3 +5,5 @@ const connection = mysql.createConnection({
     user: 'root',
     database: 'test'
 });
+
+module.exports = connection;
