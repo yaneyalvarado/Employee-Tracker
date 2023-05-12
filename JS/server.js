@@ -1,2 +1,14 @@
 const inquirer = require('inquirer');
-const mysql = require("./sql");
+const db = require("./sql");
+require("console.table");
+
+const promptUser = () => {
+    inquirer.prompt([
+        {
+            name:
+            message:
+            list:
+            choices:
+        }
+    ])
+}
