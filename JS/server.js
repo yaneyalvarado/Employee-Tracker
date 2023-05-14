@@ -1,5 +1,8 @@
+const figlet = require('figlet');
 const inquirer = require('inquirer');
-const db = require("./sql");
+const sql = require("./sql");
+const connection = require("./db/schema.sql");
+const connection2 = require("./db/seeds.sql");
 require("console.table");
 
 const promptUser = () => {
@@ -46,8 +49,13 @@ const promptUser = () => {
 })
 
 function viewAllEmployees() {
-    let db = `SELECT employee,id, employee.first_name, employee.last_name, role.title, role.salary, department.name
+    let connection = `SELECT employee,id, employee.first_name, employee.last_name, role.title, role.salary, department.name
      FROM employee, role, department
      WHERE department.id = role.department_id
-     AND role.id = employee.role_id`
+     AND role.id = employee.role_id`;
+}
+
+function viewAllRoles() {
+    let connection = `SELECT role.id, role.title, department.department_name AS department FROM role
+    INNER JOIN department ON role.department_id = department.id`;
 }
