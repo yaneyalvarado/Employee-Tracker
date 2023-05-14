@@ -5,10 +5,22 @@ require("console.table");
 const promptUser = () => {
     inquirer.prompt([
         {
-            name:
-            message:
-            list:
-            choices:
+            name: 'choices',
+            message: 'Please select one of the options',
+            type: 'list',
+            choices: [
+                'View all departments',
+                'View all roles',
+                'View all employees',
+                'Add a department',
+                'Add a role',
+                'Add an employee',
+                'Update an employee role'
+            ]
         }
     ])
 }
+.then((answers) => {
+    const {choices} = answers;
+    
+})
