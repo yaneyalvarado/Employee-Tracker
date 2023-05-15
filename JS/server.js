@@ -187,7 +187,7 @@ const addAEmployee = () => {
 const updateAnEmployeeRole = () => {
     const connection = `SELECT * FROM employee`;
     db.query(sql, (error, rows) => {
-        if (error) throws errorl
+        if (error) throw error
         const employee = [];
         rows.forEach(function (role) {
             employee.push({name: role.title, value: {role_id: role.role_id, title: role.title, dep_name: role.department_name}});
