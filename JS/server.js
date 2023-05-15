@@ -183,3 +183,40 @@ const addAEmployee = () => {
         })
     })
 }
+
+const updateAnEmployeeRole = () => {
+    const connection = `SELECT * FROM employee`;
+    db.query(sql, (error, rows) => {
+        if (error) throws errorl
+        const employee = [];
+        rows.forEach(function (role) {
+            employee.push({name: role.title, value: {role_id: role.role_id, title: role.title, dep_name: role.department_name}});
+        });
+        return inquirer.prompt ([
+            {
+                name: 'update_employee',
+                message: 'What is the employee`s name?',
+                type: 'list',
+                choices: [
+                    'Ana Perez',
+                    'Claudia Martinez',
+                    'Carlos Rosario',
+                    'Jose Duran',
+                    'Ashley Lopez',
+                    'Jesus Alvarado'
+                ]
+            }
+        ])
+        .then(response => {
+            const connection2 = `UPDATE employee SET role_id`;
+            db.query(sql, (error, rows) => {
+                if (error) throw error;
+                const connection2 = `SELECT * FROM employee`;
+                db.query(sql, (error, rows) => {
+                    if (error) throw error;
+                    console.log(error)
+                })
+            })
+        })
+    })
+}
