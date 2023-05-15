@@ -26,7 +26,7 @@ const promptUser = () => {
 .then((answers) => {
     const {choices} = answers;
     if (choices === 'View all departments') {
-        viewAllDeparmtnets();
+        viewAllDepartments();
     }
     if (choices === 'View all roles') {
         viewAllRoles();
@@ -56,6 +56,15 @@ function viewAllEmployees() {
 }
 
 function viewAllRoles() {
-    let connection = `SELECT role.id, role.title, department.department_name AS department FROM role
+    let connection = `SELECT role.id, role.title, department.department_name 
+    AS department 
+    FROM role
     INNER JOIN department ON role.department_id = department.id`;
+}
+
+function viewAllDepartments() {
+    let connection = `SELECT department.id 
+    AS id, department.department_name 
+    AS department 
+    FROM department`;
 }
