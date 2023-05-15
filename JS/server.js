@@ -133,3 +133,53 @@ const addARole = () => {
         })
     })
 }
+
+const addAEmployee = () => {
+    const connection = `SELECT * FROM employee`;
+    sql.query (sql, (error, rows) => {
+        if (error) throw error;
+        const employee = [];
+        rows.forEach(function (employee) {
+            employee.push({name: employee.first_name, value:employee.id});
+        });
+
+        const manager_id = [];
+        rows.forEach(function (manager) {
+            manager_id.push({name: manager.first_name, value: manager.id});
+        });
+        return inquirer.prompt([
+            {
+                name: 'first_name',
+                message: 'What is the employee`s first name?',
+                type: 'input'
+            },
+            {
+                name: 'last_name',
+                message: 'What is the employee`s last name?',
+                type: 'input'
+            },
+            {
+                name: 'role',
+                message: 'What is the new employee`s role?',
+                type: 'list',
+                choices: ['Accountant',
+                        'Software Engineer',
+                        'Salesperson',
+                        'Marketing Manager',
+                        'Legal Assistant',
+                        'Producer']
+            }
+        ])
+        .then(response => {
+            const connection = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES`
+            db.query(sql, (error, rows) => {
+                if (error) throw error;
+                const connection2 = `SELECT * FROM employee`;
+                db.query(sql, (error, rows) => {
+                    if (error) throw error;
+                    console.log(error)
+                })
+             })
+        })
+    })
+}
