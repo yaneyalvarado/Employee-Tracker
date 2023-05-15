@@ -88,5 +88,48 @@ const addADepartment = () => {
 };
 
 const addARole = () => {
-    inquirer
+    const connection = `SELECT * FROM department`;
+    sql.query(sql, (err, rows) => {
+        if (err) throw err;
+        const department_id = [];
+        rows.forEACH(function(department_id) {
+            department_id.push({name: department_id.department_name, value: department_id.id});
+        });
+        return inquirer.prompt([
+            {
+                name: 'role name',
+                message: 'What is the new role?',
+                type: 'input'
+            },
+            {
+                name: 'salary',
+                message: 'What is the salary for this new role?',
+                type: 'input'
+            },
+            {
+                name: 'department',
+                message: 'In what department would you like to place this new role?',
+                type: 'list',
+                choices: [
+                    'Software Engineering',
+                    'Accounting',
+                    'Sales',
+                    'Production',
+                    'Legal Team',
+                    'Marketing'
+                ]
+            }
+        ])
+        .then(response => {
+            const connection = `INSERT INTO employee_role(title, salary, department_id) VALUES`
+            db.query(sql, (error, rows) => {
+                if (error) throw error;
+                const connection2 = `SELECT * FROM employee_role`;
+                db.query(sql, (error, rows) => {
+                    if (error) throw error;
+                    console.log(error)
+                })
+            })
+        })
+    })
 }
