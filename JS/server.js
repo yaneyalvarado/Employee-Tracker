@@ -68,3 +68,25 @@ function viewAllDepartments() {
     AS department 
     FROM department`;
 }
+
+const addADepartment = () => {
+    inquirer
+    .prompt([
+        {
+            name: 'new department',
+            message: 'What would you like to name your new department?',
+            type: 'input'
+        }
+    ])
+    .then((answer) => {
+        let connection2 = `INSERT INTO department (department_name) VALUES`;
+        sql.query(sql, answer.addADepartment, (error, response) => {
+            if(error) throw error;
+            console.log(error)
+        })
+    })
+};
+
+const addARole = () => {
+    inquirer
+}

@@ -4,7 +4,9 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'employees',
-    password: ''
-});
+    password: 'Tafolla1226'
+},
+    console.log('Connected to the employee_trackert database.')
+);
 
-module.exports = connection;
+module.exports = db;
