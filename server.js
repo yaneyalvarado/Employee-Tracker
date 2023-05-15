@@ -1,6 +1,6 @@
 const figlet = require('figlet');
 const inquirer = require('inquirer');
-const sql = require("./sql");
+const sql = require("./JS/sql");
 const connection = require("./db/schema.sql");
 const connection2 = require("./db/seeds.sql");
 require("console.table");

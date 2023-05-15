@@ -1,5 +1,18 @@
 {
-  "dependencies": {
+  "name": "main",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo /'Error",
+    "start": "npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+ "dependencies": {
+  "express": "^4.17.1",
+  "jshint": "^2.12.0",
     "inquirer": "^8.2.4",
     "mysql2": "^3.3.0"
   }
