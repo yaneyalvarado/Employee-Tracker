@@ -57,18 +57,26 @@ const promptUser = () => {
      promptUser();
 }
 
-function viewAllRoles() {
-    let connection = `SELECT role.id, role.title, department.department_name 
-    AS department 
-    FROM role
-    INNER JOIN department ON role.department_id = department.id`;
+async function viewAllRoles() {
+    // let connection = `SELECT role.id, role.title, department.department_name 
+    // AS department 
+    // FROM role
+    // INNER JOIN department ON role.department_id = department.id`;
+    let connection = `SELECT * FROM role`
+    const [role] = await db.promise().query(connection)
+    console.table(role)
+    promptUser();
 }
 
-function viewAllDepartments() {
-    let connection = `SELECT department.id 
-    AS id, department.department_name 
-    AS department 
-    FROM department`;
+async function viewAllDepartments() {
+    // let connection = `SELECT department.id 
+    // AS id, department.department_name 
+    // AS department 
+    // FROM department`;
+    let connection = `SELECT * FROM department`
+    const [department] = await db.promise().query(connection)
+    console.table(department)
+    promptUser();
 }
 
 const addADepartment = () => {
@@ -91,14 +99,8 @@ const addADepartment = () => {
 };
 
 const addARole = async () => {
-    const [department] = await db.promise().query(`SELECT * FROM department`)
-    const sql = `SELECT * FROM department`;
-    // db.query(db, (err, rows) => {
-    //     if (err) throw err;
-    //     const department_id = [];
-    //     rows.forEACH(function(department_id) {
-    //         department_id.push({name: department_id.department_name, value: department_id.id});
-    //     });
+    const [department] = await db.promise().query(`SELECT * FROM role`)
+    const sql = `SELECT * FROM role`;
         inquirer.prompt([
             {
                 name: 'role name',
@@ -120,71 +122,54 @@ const addARole = async () => {
                 }))
             }
         ])
-        .then(response => {
-            const connection = `INSERT INTO employee_role(title, salary, department_id) VALUES`
-            db.query(sql, (error, rows) => {
-                if (error) throw error;
-                const connection2 = `SELECT * FROM employee_role`;
-                db.query(sql, (error, rows) => {
-                    if (error) throw error;
-                    console.log(error)
-                })
+        .then((answer) => {
+            let sql = `INSERT INTO role (name) VALUES('${answer.role}')`;
+            db.query(sql, (error, response) => {
+                if(error) throw error;
+                console.table(response)
+                promptUser();
             })
-        })
-}
+      })
+  }
 
 const addAEmployee = () => {
-    const connection = `SELECT * FROM employee`;
-    sql.query (sql, (error, rows) => {
-        if (error) throw error;
-        const employee = [];
-        rows.forEach(function (employee) {
-            employee.push({name: employee.first_name, value:employee.id});
-        });
-
-        const manager_id = [];
-        rows.forEach(function (manager) {
-            manager_id.push({name: manager.first_name, value: manager.id});
-        });
-        return inquirer.prompt([
-            {
-                name: 'first_name',
-                message: 'What is the employee`s first name?',
-                type: 'input'
-            },
-            {
-                name: 'last_name',
-                message: 'What is the employee`s last name?',
-                type: 'input'
-            },
-            {
-                name: 'role',
-                message: 'What is the new employee`s role?',
-                type: 'list',
-                choices: ['Accountant',
-                        'Software Engineer',
-                        'Salesperson',
-                        'Marketing Manager',
-                        'Legal Assistant',
-                        'Producer']
-            }
-        ])
-        .then(response => {
-            const connection = `INSERT INTO employee(first_name, last_name, role_id, manager_id) VALUES`
-            db.query(sql, (error, rows) => {
-                if (error) throw error;
-                const connection2 = `SELECT * FROM employee`;
-                db.query(sql, (error, rows) => {
-                    if (error) throw error;
-                    console.log(error)
-                })
-             })
+    const [employee] = await db.promise().query(`SELECT * FROM employee`)
+    const sql = `SELECT * FROM employee`;
+    inquirer.prompt ([
+        {
+            name: 'first_name',
+            message: 'What is the employee`s first name?',
+            type: 'input'
+        },
+        {
+            name: 'last_name',
+            message: 'What is the employee`s last name?',
+            type: 'input'
+        },
+        {
+            name: 'role',
+            message: 'What is the new employee`s role?',
+            type: 'list',
+            choices: ['Accountant',
+                    'Software Engineer',
+                    'Salesperson',
+                    'Marketing Manager',
+                    'Legal Assistant',
+                    'Producer']
+        }
+    ])
+    .then((answer) => {
+        let sql = `INSERT INTO employee (name) VALUES('${answer.employee}')`;
+        db.query(sql, (error, response) => {
+            if(error) throw error;
+            console.table(response)
+            promptUser();
         })
     })
-}
+};
 
 const updateAnEmployeeRole = () => {
-    const connection = `SELECT * FROM employee`;
+    const sql = `SELECT * FROM employee`;
     db.query(sql, (error, rows) => {
         if (error) throw error
         const employee = [];
@@ -206,11 +191,11 @@ const updateAnEmployeeRole = () => {
                 ]
             }
         ])
-        .then(response => {
-            const connection2 = `UPDATE employee SET role_id`;
+        .then((answer) => {
+            const sql = `UPDATE employee SET role_id`;
             db.query(sql, (error, rows) => {
                 if (error) throw error;
-                const connection2 = `SELECT * FROM employee`;
+                let sql = `SELECT * FROM employee`;
                 db.query(sql, (error, rows) => {
                     if (error) throw error;
                     console.log(error)
