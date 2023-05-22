@@ -1,8 +1,6 @@
-const figlet = require('figlet');
+const { table } = require('console');
 const inquirer = require('inquirer');
-const sql = require("./JS/sql");
-const connection = require("./db/schema.sql");
-const connection2 = require("./db/seeds.sql");
+const db = require("./JS/sql.js");
 require("console.table");
 
 const promptUser = () => {
@@ -22,7 +20,7 @@ const promptUser = () => {
             ]
         }
     ])
-}
+
 .then((answers) => {
     const {choices} = answers;
     if (choices === 'View all departments') {
@@ -47,12 +45,16 @@ const promptUser = () => {
         updateAnEmployeeRole();
     }
 })
-
-function viewAllEmployees() {
-    let connection = `SELECT employee,id, employee.first_name, employee.last_name, role.title, role.salary, department.name
-     FROM employee, role, department
-     WHERE department.id = role.department_id
-     AND role.id = employee.role_id`;
+}
+ async function viewAllEmployees() {
+    // let connection = `SELECT employee,id, employee.first_name, employee.last_name, role.title, role.salary, department.name
+    //  FROM employee, role, department
+    //  WHERE department.id = role.department_id
+    //  AND role.id = employee.role_id`;
+    let connection = `SELECT * FROM employee`
+     const [employees] = await db.promise().query(connection)
+     console.table(employees)
+     promptUser();
 }
 
 function viewAllRoles() {
@@ -73,29 +75,31 @@ const addADepartment = () => {
     inquirer
     .prompt([
         {
-            name: 'new department',
+            name: 'department',
             message: 'What would you like to name your new department?',
             type: 'input'
         }
     ])
     .then((answer) => {
-        let connection2 = `INSERT INTO department (department_name) VALUES`;
-        sql.query(sql, answer.addADepartment, (error, response) => {
+        let sql = `INSERT INTO department (name) VALUES('${answer.department}')`;
+        db.query(sql, (error, response) => {
             if(error) throw error;
-            console.log(error)
+            console.table(response)
+            promptUser();
         })
     })
 };
 
-const addARole = () => {
-    const connection = `SELECT * FROM department`;
-    sql.query(sql, (err, rows) => {
-        if (err) throw err;
-        const department_id = [];
-        rows.forEACH(function(department_id) {
-            department_id.push({name: department_id.department_name, value: department_id.id});
-        });
-        return inquirer.prompt([
+const addARole = async () => {
+    const [department] = await db.promise().query(`SELECT * FROM department`)
+    const sql = `SELECT * FROM department`;
+    // db.query(db, (err, rows) => {
+    //     if (err) throw err;
+    //     const department_id = [];
+    //     rows.forEACH(function(department_id) {
+    //         department_id.push({name: department_id.department_name, value: department_id.id});
+    //     });
+        inquirer.prompt([
             {
                 name: 'role name',
                 message: 'What is the new role?',
@@ -110,14 +114,10 @@ const addARole = () => {
                 name: 'department',
                 message: 'In what department would you like to place this new role?',
                 type: 'list',
-                choices: [
-                    'Software Engineering',
-                    'Accounting',
-                    'Sales',
-                    'Production',
-                    'Legal Team',
-                    'Marketing'
-                ]
+                choices: department.map(({id, name}) => ({
+                    name, 
+                    value: id
+                }))
             }
         ])
         .then(response => {
@@ -131,7 +131,6 @@ const addARole = () => {
                 })
             })
         })
-    })
 }
 
 const addAEmployee = () => {
@@ -220,3 +219,5 @@ const updateAnEmployeeRole = () => {
         })
     })
 }
+
+promptUser();
