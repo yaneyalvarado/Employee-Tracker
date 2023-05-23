@@ -47,10 +47,6 @@ const promptUser = () => {
 })
 }
  async function viewAllEmployees() {
-    // let connection = `SELECT employee,id, employee.first_name, employee.last_name, role.title, role.salary, department.name
-    //  FROM employee, role, department
-    //  WHERE department.id = role.department_id
-    //  AND role.id = employee.role_id`;
     let connection = `SELECT * FROM employee`
      const [employees] = await db.promise().query(connection)
      console.table(employees)
@@ -58,10 +54,6 @@ const promptUser = () => {
 }
 
 async function viewAllRoles() {
-    // let connection = `SELECT role.id, role.title, department.department_name 
-    // AS department 
-    // FROM role
-    // INNER JOIN department ON role.department_id = department.id`;
     let connection = `SELECT * FROM role`
     const [role] = await db.promise().query(connection)
     console.table(role)
@@ -69,10 +61,6 @@ async function viewAllRoles() {
 }
 
 async function viewAllDepartments() {
-    // let connection = `SELECT department.id 
-    // AS id, department.department_name 
-    // AS department 
-    // FROM department`;
     let connection = `SELECT * FROM department`
     const [department] = await db.promise().query(connection)
     console.table(department)
@@ -103,7 +91,7 @@ const addARole = async () => {
     const sql = `SELECT * FROM role`;
         inquirer.prompt([
             {
-                name: 'role name',
+                name: 'role_name',
                 message: 'What is the new role?',
                 type: 'input'
             },
@@ -133,7 +121,7 @@ const addARole = async () => {
   }
 
 const addAEmployee = () => {
-    const [employee] = await db.promise().query(`SELECT * FROM employee`)
+    const [employee] = db.promise().query(`SELECT * FROM employee`)
     const sql = `SELECT * FROM employee`;
     inquirer.prompt ([
         {
@@ -199,6 +187,7 @@ const updateAnEmployeeRole = () => {
                 db.query(sql, (error, rows) => {
                     if (error) throw error;
                     console.log(error)
+                    promptUser();
                 })
             })
         })
