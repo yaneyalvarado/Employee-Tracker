@@ -26,6 +26,7 @@ A command-line application that manages a company's employee database, using Nod
 - THEN I am prompted to select an employee to update and their new role and this information is updated in the database
 
 ## Demo
+https://drive.google.com/file/d/1je2hUYSOCVfsUa6wZo-AHJKdDZ9Lmw-7/view?usp=share_link
 
 ## GitHub
 https://github.com/yaneyalvarado/Employee-Tracker
