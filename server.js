@@ -113,7 +113,7 @@ const addARole = async () => {
         .then((answer) => {
             let sql = `INSERT INTO role (name) VALUES('${answer.role}')`;
             db.query(sql, (error, response) => {
-                if(error) throw error;
+                // if(error) throw error;
                 console.table(response)
                 promptUser();
             })
@@ -121,7 +121,7 @@ const addARole = async () => {
   }
 
 const addAEmployee = () => {
-    const [employee] = db.promise().query(`SELECT * FROM employee`)
+    // const [employee] = db.promise().query(`SELECT * FROM employee`)
     const sql = `SELECT * FROM employee`;
     inquirer.prompt ([
         {
@@ -144,12 +144,18 @@ const addAEmployee = () => {
                     'Marketing Manager',
                     'Legal Assistant',
                     'Producer']
+        },
+        {
+            name: 'manager',
+            message: 'Who is the employee`s manager?',
+            type: 'list',
+            choices: ['1', '2', '3', '4', '5', '6']
         }
     ])
     .then((answer) => {
         let sql = `INSERT INTO employee (name) VALUES('${answer.employee}')`;
         db.query(sql, (error, response) => {
-            if(error) throw error;
+            // if(error) throw error;
             console.table(response)
             promptUser();
         })
@@ -159,7 +165,7 @@ const addAEmployee = () => {
 const updateAnEmployeeRole = () => {
     const sql = `SELECT * FROM employee`;
     db.query(sql, (error, rows) => {
-        if (error) throw error
+        // if (error) throw error
         const employee = [];
         rows.forEach(function (role) {
             employee.push({name: role.title, value: {role_id: role.role_id, title: role.title, dep_name: role.department_name}});
@@ -182,10 +188,10 @@ const updateAnEmployeeRole = () => {
         .then((answer) => {
             const sql = `UPDATE employee SET role_id`;
             db.query(sql, (error, rows) => {
-                if (error) throw error;
+                // if (error) throw error;
                 let sql = `SELECT * FROM employee`;
                 db.query(sql, (error, rows) => {
-                    if (error) throw error;
+                    // if (error) throw error;
                     console.log(error)
                     promptUser();
                 })
